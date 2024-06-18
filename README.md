@@ -1,3 +1,1 @@
-[![Build Status](https://travis-ci.org/ZumeProject/zume-training.svg?branch=master)](https://travis-ci.org/ZumeProject/zume-training)
-
-Zúme Project Theme for the multilingual site
+Zume version 4 (legacy) site to support non-completed translation of Zume 5.0.
