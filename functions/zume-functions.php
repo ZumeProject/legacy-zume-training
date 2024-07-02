@@ -259,7 +259,7 @@ function zume_overview_url() {
 
 function zume_guidebook_url() {
     $current_lang = zume_current_language();
-    $url = zume_get_posts_translation_url( 'Guidebook', $current_lang );
+    $url = zume_get_posts_translation_url( 'Book', $current_lang );
     return $url;
 }
 

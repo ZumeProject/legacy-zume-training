@@ -38,40 +38,7 @@ if ( is_user_logged_in() ) {
 ?>
 <div id="<?php echo esc_attr( $zume_first_time ) ?>" class="training">
     <div  id="inner-content" class="grid-x padding-top-1">
-        <!-------------------------------------------------------------------------------------------------------------
 
-        Challenge section (logged out)
-
-        ------------------------------------------------------------------------------------------------------------->
-        <?php if ( ! is_user_logged_in() ) : ?>
-        <div id="challenge" class="cell">
-            <div class="grid-x ">
-                <div class="large-1 cell"></div> <!-- side padding -->
-
-                <!-- Center Column -->
-                <div class="large-10 cell">
-
-                    <div class="callout">
-                        <div class="grid-x grid-padding-x">
-                            <div class="cell hide-for-small-only medium-1"></div>
-                            <div class="cell medium-7">
-                                <p class="t-ad-message"><?php echo esc_html__( "Plan your group, add members, track your progress, connect with a coach, and add your effort to the global vision!", 'zume' ) ?></p>
-                            </div>
-                            <div class="cell medium-4">
-                                <a href="<?php echo esc_url( zume_register_url( $current_language ) ) ?>" class="button large secondary-button" ><?php echo esc_html__( "Register Forever Free", 'zume' ) ?></a>
-                            </div>
-                        </div>
-                    </div><!-- end #callout -->
-
-                </div> <!-- end center column -->
-
-                <div class="large-1 cell"></div> <!-- side padding -->
-            </div>
-        </div> <!-- end #challenge-->
-        <?php endif; ?>
-        <!-------------------------------------------------------------------------------------------------------------
-        End Challenge
-        -------------------------------------------------------------------------------------------------------------->
 
         <div id="course" class="cell">
             <div class="grid-x">
@@ -749,8 +716,8 @@ if ( is_user_logged_in() ) {
                                         <?php echo esc_html__( "15 min", 'zume' ) ?>
                                     </div>
                                     <div class="cell medium-10">
-                                        <a href="<?php echo esc_url( zume_get_landing_translation_url( 27, $current_language ) ) ?>" rel=“nofollow”><?php esc_html_e( 'Three-Month Plan', 'zume' ); ?>
-                                            <?php echo ( is_user_logged_in() ) ? '' : '('. esc_html__( "login required", 'zume' )  . ')'; ?></a><br>
+                                        <span class="training-item">
+                                            <?php esc_html_e( 'Three-Month Plan', 'zume' ); ?></span><br>
                                         <p class="t-description"><?php echo esc_html__( "Create and share your plan for how you will implement the Zúme tools over the next three months.", 'zume' ) ?></p>
                                     </div>
                                     <div class="cell medium-2 t-length hide-extra">

@@ -598,20 +598,7 @@ function open_session( session_number, key, i ) {
     jQuery('#training-modal-content').empty().html(`
     <div class="grid-y padding-top-1 training">
         <div class="cell"><h2 class="center">${_.escape( i18n.str.x19 )/*Welcome to Session*/} ${_.escape( session_number )}</h2></div>
-        <div class="cell callout primary-color margin-2">
-            <div class="grid-x padding-right-2 padding-left-2 grid-padding-y" id="not-logged-in">
-                <div class="cell center list-head"><h3>${_.escape( i18n.str.x20 )/*You're missing out*/} <br>${_.escape( i18n.str.x21 )/*Register Now!*/}</h3></div>
-                <div class="cell list-reasons">
-                    <ul>
-                    <li>${_.escape( i18n.str.x22 )/*track your personal training progress*/}</li>
-                    <li>${_.escape( i18n.str.x23 )/*access group planning tools*/}</li>
-                    <li>${_.escape( i18n.str.x24 )/*connect with a coach*/}</li>
-                    <li>${_.escape( i18n.str.x25 )/*add your effort to the global vision!*/}</li>
-                    </ul>
-                </div>
-                <div class="cell center"><a href="${_.escape( zumeTraining.site_urls.register ) }" class="button expanded large secondary-button">${_.escape( i18n.str.x26 )/*Register for Free*/}</a><a href="${_.escape( zumeTraining.site_urls.login )}" type="submit" class="button clear padding-bottom-0">${_.escape( i18n.str.x27 )/*Login*/}</a></div>
-            </div>
-        </div>
+        <div class="cell"><hr></div>
         <div class="cell center margin-bottom-1"><a class="center button hollow" id="continue-to-session" onclick="continue_to_session( ${_.escape( session_number )} )" >${_.escape( i18n.str.x28 )/*Continue*/}</a>  <span class="spinner" style="display: none;"><img src="${zumeTraining.theme_uri}/spinner.svg" style="width:30px;height:30px;" alt="spinner" /></span></div>
     </div>
   `)
