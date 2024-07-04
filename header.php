@@ -67,10 +67,7 @@ if ( isset( $zume_languages_v5[$zume_current_language] ) && ! is_admin() ) {
 
             <?php get_template_part( 'parts/content', 'offcanvas' ); ?>
 
-            <div class="off-canvas-content" style="margin-top:30px;" data-off-canvas-content >
-                <?php if ( ! str_contains( dt_get_url_path(), 'course' ) ) : ?>
-                <div style="height:20px; width: 100%; background-color:orange; position: absolute; top: 0; z-index:99; margin-bottom:10px; text-align:center; font-size:.8em;">Full feature Zúme Training tools not yet available for this Language</div>
-                <?php endif; ?>
+            <div class="off-canvas-content" data-off-canvas-content >
 
                 <header class="header" role="banner" >
 
