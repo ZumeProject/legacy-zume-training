@@ -23,25 +23,51 @@
     <hr>
     <table class="hover" id="language-table">
         <?php
-        global $post;
-        $post_slug = $post->post_name;
-        $lang = zume_languages();
-        foreach ( $lang as $item ){
-            if ( 'en' === $item['code'] ) {
-                $url = esc_url( site_url() );
-            } else {
-                $url = esc_url( site_url() ) . '/' . $item['code'] . '/';
+
+        $dt_url = new DT_URL( dt_get_url_path() );
+        $url_pieces = zume_get_url_pieces();
+        $zume_languages_by_code = zume_languages();
+
+        foreach ( $zume_languages_by_code as $item ){
+            $is_v4 = ( ! $item['enable_flags']['version_5_ready'] && $item['enable_flags']['version_4_available'] );
+            $is_v5 = $item['enable_flags']['version_5_ready'];
+
+            $query = '';
+            if ( isset( $dt_url->parsed_url['query'] ) ) {
+                $query = '?' . $dt_url->parsed_url['query'];
             }
+
+            if ( 'en' === $item['code'] ) {
+                $url = 'https://zume5.training/' . $url_pieces['path'] . $query;
+            }
+            else if ( $is_v5 ) {
+                $url = 'https://zume5.training/' . $item['code'] . '/' . $url_pieces['path'] . $query;
+            }
+            else if ( $is_v4 ) {
+                $url = esc_url( trailingslashit( site_url() ) ) . $item['code'] . '/' . $url_pieces['path'] . $query;
+            } else {
+                continue;
+            }
+
             ?>
-            <tr class="language-selector" data-url="<?php echo esc_url( $url ) ?>" data-value="<?php echo esc_attr( $item['code'] ) ?>" id="row-<?php echo esc_attr( $item['code'] ) ?>">
-                <td><?php echo esc_html( $item['nativeName'] ) ?></td>
-                <td><?php echo esc_html( $item['enDisplayName'] ) ?></td>
+            <tr role="button" class="language-selector" data-url="<?php echo esc_url( $url ) ?>" data-value="<?php echo esc_attr( $item['code'] ) ?>" id="row-<?php echo esc_attr( $item['code'] ) ?>">
+                <?php if ( $is_v5 ) {
+                    ?>
+                    <td><strong><?php echo esc_html( $item['nativeName'] ) ?></strong></td>
+                    <td><strong><?php echo esc_html( $item['enDisplayName'] ) ?></td>
+                    <?php
+                } else {
+                    ?>
+                    <td><?php echo esc_html( $item['nativeName'] ) ?></td>
+                    <td><?php echo esc_html( $item['enDisplayName'] ) ?></td>
+                    <?php
+                }
+                ?>
             </tr>
             <?php
         }
         ?>
     </table>
-    <div class="center language-selector" style="cursor:pointer;" data-url="<?php echo esc_url( trailingslashit( site_url() ) ) . 'language-progress/' ?>">More languages in progress</div>
     <script>
         jQuery(document).ready(function($){
             $('.language-selector').on('click', function(e){
