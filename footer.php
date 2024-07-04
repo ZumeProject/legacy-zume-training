@@ -122,6 +122,6 @@ if ( false ) : ?>
         }(document, 'script', 'facebook-jssdk'));
     </script>
 <?php endif; ?>
-
+</div><!-- top bar notice wrapper - end wrapper -->
 </body>
 </html> <!-- end page -->

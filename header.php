@@ -46,18 +46,22 @@
     <!-- Uncomment this line if using the Off-Canvas Menu -->
 
     <body <?php body_class(); ?>>
+
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MSGWKV5"
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-        <div class="off-canvas-wrapper">
+        <div class="off-canvas-wrapper" >
 
             <?php get_template_part( 'parts/content', 'offcanvas' ); ?>
 
-            <div class="off-canvas-content" data-off-canvas-content>
+            <div class="off-canvas-content" style="margin-top:30px;" data-off-canvas-content >
+                <?php if ( ! str_contains( dt_get_url_path(), 'course' ) ) : ?>
+                <div style="height:20px; width: 100%; background-color:orange; position: absolute; top: 0; z-index:99; margin-bottom:10px; text-align:center; font-size:.8em;">Full feature Zúme Training tools not yet available for this Language</div>
+                <?php endif; ?>
 
-                <header class="header" role="banner">
+                <header class="header" role="banner" >
 
                      <!-- This navs will be applied to the topbar, above all content
                           To see additional nav styles, visit the /parts directory -->
