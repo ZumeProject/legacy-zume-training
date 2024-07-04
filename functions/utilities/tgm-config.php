@@ -47,30 +47,14 @@ function zume_register_required_plugins() {
             'force_deactivation' => false,
             'is_callable'       => 'Psalm_119',
         ),
-        array(
-            'name' => 'Host Header Injection Fix',
-            'slug' => 'host-header-injection-fix',
-            'version' => '1.1',
-            'required' => true,
-        ),
-        array(
-            'name' => 'iThemes Security',
-            'slug' => 'better-wp-security',
-            'version' => '6.7.0',
-            'required' => true,
-        ),
+
         array(
             'name' => 'Classic Editor',
             'slug' => 'classic-editor',
             'version' => '1.5',
             'required' => true,
         ),
-        array(
-            'name' => 'Disciple Tools - Network Dashboard Remote',
-            'slug' => 'disciple-tools-network-dashboard-remote',
-            'version' => '1.0',
-            'required' => true,
-        ),
+
 //        array(
 //            'name' => 'Infinite WP',
 //            'slug' => 'iwp-client',
@@ -96,13 +80,7 @@ function zume_register_required_plugins() {
             'required' => true,
             'force_activation'  => true,
         ),
-        array(
-            'name' => 'Nav Menu Roles',
-            'slug' => 'nav-menu-roles',
-            'version' => '1.9.1',
-            'required' => true,
-            'force_activation'  => true,
-        ),
+
 //        array(
 //            'name' => 'Peter\'s Login Redirect',
 //            'slug' => 'peters-login-redirect',
