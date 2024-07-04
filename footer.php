@@ -25,7 +25,7 @@
         <?php
         global $post;
         $post_slug = $post->post_name;
-        $lang = zume_language_file();
+        $lang = zume_languages();
         foreach ( $lang as $item ){
             if ( 'en' === $item['code'] ) {
                 $url = esc_url( site_url() );
@@ -64,7 +64,7 @@
  * Enable Zendesk by setting this variable to true at the top of the template or page.
  */
 global $zendesk_enable;
-if ( ! empty( $zendesk_enable ) ) : ?>
+if ( false ) : ?>
     <!-- Messenger Chat Plugin Code -->
     <div id="fb-root"></div>
 

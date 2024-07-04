@@ -33,6 +33,8 @@ add_filter( 'zume_not_ready_pieces', function( $lang_code, $state ) {
 require_once( 'functions/utilities/debugger-log.php' ); // debug logger used for development.
 require_once( 'functions/utilities/global-functions.php' ); // debug logger used for development.
 
+require_once( 'functions/zume-languages.php' ); // zume_languages function from Zume 5.0
+
 // Post Types
 //require_once( 'functions/post-types/video-post-type.php' );
 //require_once( 'functions/post-types/pdf-download-post-type.php' );
