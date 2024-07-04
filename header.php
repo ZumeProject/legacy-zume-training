@@ -1,11 +1,14 @@
 <?php //zume_force_login(); // requires no spaces above or else it will throw a headers already send error.
-$zume_languages_by_code = zume_languages();
+
+/* Redirect to zume5 all version_5 enabled languages */
+$zume_languages_v5 = zume_languages('v5_only');
 $zume_current_language = zume_current_language();
-dt_write_log($zume_current_language);
-//foreach ( $zume_languages_by_code as $item ) {
-//    $is_v4 = (!$item['enable_flags']['version_5_ready'] && $item['enable_flags']['version_4_available']);
-//    $is_v5 = $item['enable_flags']['version_5_ready'];
-//}
+if ( isset( $zume_languages_v5[$zume_current_language] ) && ! is_admin() ) {
+    if ( wp_redirect( 'https://zume5.training/'.$zume_current_language ) ) {
+        exit;
+    }
+}
+
 ?>
 
 <!doctype html>
