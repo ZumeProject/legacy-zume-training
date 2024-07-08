@@ -22,7 +22,6 @@
     <h3><img src="<?php echo esc_url( zume_images_uri() ) ?>language.svg" style="width:25px;height:25px;" /> <?php esc_html_e( "Language", 'zume' ) ?></h3>
     <hr>
     <table class="hover" id="language-table">
-        <td colspan="2" style="background-color: #008CC7; color: white;">Full System Support</td>
         <?php
 
         $dt_url = new DT_URL( dt_get_url_path() );
@@ -52,55 +51,14 @@
 
             ?>
             <tr role="button" class="language-selector" data-url="<?php echo esc_url( $url ) ?>" data-value="<?php echo esc_attr( $item['code'] ) ?>" id="row-<?php echo esc_attr( $item['code'] ) ?>">
-                <?php if ( $is_v5 ) {
-                    ?>
-                    <td><strong><?php echo esc_html( $item['nativeName'] ) ?></strong></td>
-                    <td><strong><?php echo esc_html( $item['enDisplayName'] ) ?></strong></td>
-                    <?php
-                }
-                ?>
+                <td><?php echo esc_html( $item['nativeName'] ) ?></td>
+                <td><?php echo esc_html( $item['enDisplayName'] ) ?></td>
             </tr>
             <?php
         }
 
         ?>
-        <td colspan="2" style="background-color: #008CC7; color: white;">Course Content Only Support</td>
-        <?php
 
-        foreach ( $zume_languages_by_code as $item ){
-            $is_v4 = ( ! $item['enable_flags']['version_5_ready'] && $item['enable_flags']['version_4_available'] );
-            $is_v5 = $item['enable_flags']['version_5_ready'];
-
-            $query = '';
-            if ( isset( $dt_url->parsed_url['query'] ) ) {
-                $query = '?' . $dt_url->parsed_url['query'];
-            }
-
-            if ( 'en' === $item['code'] ) {
-                $url = 'https://zume5.training/' . $url_pieces['path'] . $query;
-            }
-            else if ( $is_v5 ) {
-                $url = 'https://zume5.training/' . $item['code'] . '/' . $url_pieces['path'] . $query;
-            }
-            else if ( $is_v4 ) {
-                $url = esc_url( trailingslashit( site_url() ) ) . $item['code'] . '/' . $url_pieces['path'] . $query;
-            } else {
-                continue;
-            }
-
-            ?>
-            <tr role="button" class="language-selector" data-url="<?php echo esc_url( $url ) ?>" data-value="<?php echo esc_attr( $item['code'] ) ?>" id="row-<?php echo esc_attr( $item['code'] ) ?>">
-                <?php if ( $is_v4 ) {
-                    ?>
-                    <td><?php echo esc_html( $item['nativeName'] ) ?></td>
-                    <td><?php echo esc_html( $item['enDisplayName'] ) ?></td>
-                    <?php
-                }
-                ?>
-            </tr>
-            <?php
-        }
-        ?>
     </table>
     <script>
         jQuery(document).ready(function($){
