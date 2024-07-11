@@ -11,15 +11,15 @@ if ( isset( $zume_languages_v5[$zume_current_language] ) && ! is_admin() ) {
         $query = '?' . $dt_url->parsed_url['query'];
     }
     if ( ! empty( $query ) ) {
-        wp_redirect( 'https://zume5.training/' . $zume_current_language . '/' . $url_pieces['path'] . $query );
+        wp_redirect( 'https://zume5.training/' . $zume_current_language . '/' . $url_pieces['path'] . $query, 301 );
         exit;
     }
     else if ( ! empty( $url_pieces['path'] ) ) {
-        wp_redirect( 'https://zume5.training/' . $zume_current_language . '/' . $url_pieces['path'] );
+        wp_redirect( 'https://zume5.training/' . $zume_current_language . '/' . $url_pieces['path'], 301 );
         exit;
     }
     else {
-        wp_redirect( 'https://zume5.training/' . $zume_current_language );
+        wp_redirect( 'https://zume5.training/' . $zume_current_language, 301 );
         exit;
     }
 }
