@@ -38,10 +38,10 @@
             }
 
             if ( 'en' === $item['code'] ) {
-                $url = 'https://zume5.training/' . $url_pieces['path'] . $query;
+                $url = 'https://zume.training/' . $url_pieces['path'] . $query;
             }
             else if ( $is_v5 ) {
-                $url = 'https://zume5.training/' . $item['code'] . '/' . $url_pieces['path'] . $query;
+                $url = 'https://zume.training/' . $item['code'] . '/' . $url_pieces['path'] . $query;
             }
             else if ( $is_v4 ) {
                 $url = esc_url( trailingslashit( site_url() ) ) . $item['code'] . '/' . $url_pieces['path'] . $query;
