@@ -4,7 +4,7 @@
 define( 'DOING_AJAX', true );
 define( 'SHORTINIT', true );
 require_once( $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php' ); // loads the wp framework when called
-$theme_path = $_SERVER['DOCUMENT_ROOT'] . '/wp-content/themes/zume-training/';
+$theme_path = $_SERVER['DOCUMENT_ROOT'] . '/wp-content/themes/legacy-zume-training/';
 
 global $wpdb;
 $site_url  = $wpdb->get_var(
@@ -21,7 +21,7 @@ if ( isset( $_GET['id'] ) && ! empty( $_GET['id'] ) ) {
         die( 'Not the correct id type' );
     }
     $vimeo_id = sanitize_text_field( wp_unslash( $_GET['id'] ) );
-    // https://zume.training/wp-content/themes/zume-training/video.php?id=551339739
+    // https://zume.training/wp-content/themes/legacy-zume-training/video.php?id=551339739
 
     // @todo Add movement logging
 
