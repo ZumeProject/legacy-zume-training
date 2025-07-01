@@ -1,10 +1,20 @@
 <?php
 /**
- * These are global functions that are used throughout the system, and used in the coaching system. There is a copy of this file in the coaching system.
+ * Zume Training System - Global Functions
+ *
+ * These are global functions that are used throughout the system, and used in the coaching system.
+ * There is a copy of this file in the coaching plugin.
  * If changes are made here, they need copied to the coaching plugin.
  * All sql queries should not use variable table names, but should be fully qualified.
  */
 
+// =============================================================================
+// #region USER DATA FUNCTIONS
+// =============================================================================
+/**
+ * Functions for retrieving and managing user profile data, stages, locations,
+ * languages, timezones, commitments, plans, churches, and related data.
+ */
 
 if ( ! function_exists( 'zume_get_user_profile' ) ) {
     function zume_get_user_profile( $user_id = null ) {
@@ -164,6 +174,8 @@ if ( ! function_exists( 'zume_get_user_profile' ) ) {
         }
     }
 }
+
+
 if ( ! function_exists( 'zume_get_user_stage' ) ) {
     function zume_get_user_stage( $user_id = null, $log = null, $number_only = false ) {
         if ( is_null( $user_id ) ) {
@@ -320,7 +332,7 @@ if ( ! function_exists( 'zume_get_user_language' ) ) {
             $zume_languages_by_code = zume_languages( 'code' );
         }
 
-        $contact_id = zume_get_user_contact_id($user_id);
+        $contact_id = zume_get_user_contact_id( $user_id );
         $language_code = get_post_meta( $contact_id, 'user_preferred_language', true );
 
         if ( ! $language_code ) {
@@ -337,6 +349,14 @@ if ( ! function_exists( 'zume_get_user_language' ) ) {
         return isset( $zume_languages_by_code[$language_code] ) ? $zume_languages_by_code[$language_code] : $zume_languages_by_code['en'];
     }
 }
+// =============================================================================
+// #endregion USER LANGUAGE FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region USER LOCATION FUNCTIONS
+// =============================================================================
+
 if ( ! function_exists( 'zume_get_user_location' ) ) {
     function zume_get_user_location( $user_id = null, $ip_lookup = false ) {
         if ( is_null( $user_id ) ) {
@@ -382,6 +402,14 @@ if ( ! function_exists( 'zume_get_user_location' ) ) {
         ];
     }
 }
+// =============================================================================
+// #endregion USER LOCATION FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region USER TIMEZONE FUNCTIONS
+// =============================================================================
+
 if ( ! function_exists( 'zume_get_user_timezone' ) ) {
     function zume_get_user_timezone( $user_id = null, $location = null ) {
         if ( is_null( $user_id ) ) {
@@ -411,6 +439,14 @@ if ( ! function_exists( 'zume_get_user_timezone' ) ) {
         return $timezone_details;
     }
 }
+// =============================================================================
+// #endregion USER TIMEZONE FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region USER HOST FUNCTIONS
+// =============================================================================
+
 if ( ! function_exists( 'zume_get_user_host' ) ) {
     function zume_get_user_host( $user_id = null, $log = null ) {
         if ( is_null( $user_id ) ) {
@@ -470,6 +506,14 @@ if ( ! function_exists( 'zume_get_user_host' ) ) {
         ];
     }
 }
+// =============================================================================
+// #endregion USER HOST FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region USER MAWL FUNCTIONS
+// =============================================================================
+
 if ( ! function_exists( 'zume_get_user_mawl' ) ) {
     function zume_get_user_mawl( $user_id = null, $log = null ) {
         if ( is_null( $user_id ) ) {
@@ -529,6 +573,14 @@ if ( ! function_exists( 'zume_get_user_mawl' ) ) {
         ];
     }
 }
+// =============================================================================
+// #endregion USER MAWL FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region USER FRIENDS FUNCTIONS
+// =============================================================================
+
 if ( ! function_exists( 'zume_get_user_friends' ) ) {
     function zume_get_user_friends( $user_id = null ) {
         if ( is_null( $user_id ) ) {
@@ -575,6 +627,14 @@ if ( ! function_exists( 'zume_get_user_friends' ) ) {
         return $friends;
     }
 }
+// =============================================================================
+// #endregion USER FRIENDS FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region USER COMMITMENTS FUNCTIONS
+// =============================================================================
+
 if ( ! function_exists( 'zume_get_user_commitments' ) ) {
     // open, closed, all
     function zume_get_user_commitments( $user_id = null, $status = 'open', $category = 'custom' )
@@ -624,6 +684,14 @@ if ( ! function_exists( 'zume_get_user_commitments' ) ) {
         return $list;
     }
 }
+// =============================================================================
+// #endregion USER COMMITMENTS FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region USER PLANS FUNCTIONS
+// =============================================================================
+
 if ( ! function_exists( 'zume_get_user_plans' ) ) {
     function zume_get_user_plans( $user_id = null )
     {
@@ -729,6 +797,14 @@ if ( ! function_exists( 'zume_get_user_plans' ) ) {
         return $plans;
     }
 }
+// =============================================================================
+// #endregion USER PLANS FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region USER CHURCHES FUNCTIONS
+// =============================================================================
+
 if ( ! function_exists( 'zume_get_user_churches' ) ) {
     function zume_get_user_churches( $user_id = null, $by_key = false ) {
         if ( is_null( $user_id ) ) {
@@ -769,24 +845,51 @@ if ( ! function_exists( 'zume_get_user_churches' ) ) {
         return $churches;
     }
 }
+// =============================================================================
+// #endregion USER CHURCHES FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region USER CONTACT ID FUNCTIONS
+// =============================================================================
+
 if ( ! function_exists( 'zume_get_user_contact_id' ) ) {
     function zume_get_user_contact_id( $user_id ) {
         global $wpdb;
         return $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM zume_postmeta WHERE meta_key = 'corresponds_to_user' AND meta_value = %s", $user_id ) );
     }
 }
+// =============================================================================
+// #endregion USER CONTACT ID FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region USER COACHING CONTACT ID FUNCTIONS
+// =============================================================================
+
 if ( ! function_exists( 'zume_get_user_coaching_contact_id' ) ) {
     function zume_get_user_coaching_contact_id( $user_id ) {
         global $wpdb;
         return $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM zume_3_postmeta WHERE meta_key = 'trainee_user_id' AND meta_value = %s", $user_id ) );
     }
 }
+// =============================================================================
+// #endregion USER COACHING CONTACT ID FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region USER ID BY CONTACT ID FUNCTIONS
+// =============================================================================
+
 if ( ! function_exists( 'zume_get_user_id_by_contact_id' ) ) {
     function zume_get_user_id_by_contact_id( $contact_id ) {
         global $wpdb;
         return $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM zume_usermeta WHERE meta_key = 'zume_corresponds_to_contact' AND meta_value = %s", $contact_id ) );
     }
 }
+// =============================================================================
+// #endregion USER ID BY CONTACT ID FUNCTIONS
+// =============================================================================
 if ( ! function_exists( 'zume_get_user_log' ) ) {
     /**
      * Get the user's log. $type and $subtype optionally filter the logs
@@ -823,6 +926,18 @@ if ( ! function_exists( 'zume_get_user_log' ) ) {
         }
     }
 }
+
+// =============================================================================
+// #endregion USER DATA FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region LANGUAGE & LOCALIZATION FUNCTIONS
+// =============================================================================
+/**
+ * Functions for language management, localization, feature flags, and locale handling.
+ */
+
 if ( ! function_exists( 'zume_languages' ) ) {
     /**
      * @param string $type 'code' or 'locale' or 'full'
@@ -870,7 +985,7 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'enable_flags' => [
                     'version_4_available' => false,
                     'translator_enabled' => true,
-                    'version_5_ready' => false,
+                    'version_5_ready' => true,
                     'pieces_pages' => false,
                     'course_slides_download' => false,
                 ],
@@ -1041,7 +1156,7 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'enable_flags' => [
                     'version_4_available' => true,
                     'translator_enabled' => true,
-                    'version_5_ready' => false,
+                    'version_5_ready' => true,
                     'pieces_pages' => false,
                     'course_slides_download' => false,
                 ],
@@ -1098,7 +1213,7 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'enable_flags' => [
                     'version_4_available' => false,
                     'translator_enabled' => true,
-                    'version_5_ready' => false,
+                    'version_5_ready' => true,
                     'pieces_pages' => false,
                     'course_slides_download' => false,
                 ],
@@ -1212,7 +1327,7 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'enable_flags' => [
                     'version_4_available' => true,
                     'translator_enabled' => true,
-                    'version_5_ready' => false,
+                    'version_5_ready' => true,
                     'pieces_pages' => true,
                     'course_slides_download' => false,
                 ],
@@ -1345,7 +1460,7 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'enable_flags' => [
                     'version_4_available' => false,
                     'translator_enabled' => true,
-                    'version_5_ready' => false,
+                    'version_5_ready' => true,
                     'pieces_pages' => false,
                     'course_slides_download' => false,
                 ],
@@ -1402,7 +1517,7 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'enable_flags' => [
                     'version_4_available' => true,
                     'translator_enabled' => true,
-                    'version_5_ready' => false,
+                    'version_5_ready' => true,
                     'pieces_pages' => false,
                     'course_slides_download' => false,
                 ],
@@ -1421,7 +1536,7 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'enable_flags' => [
                     'version_4_available' => true,
                     'translator_enabled' => true,
-                    'version_5_ready' => false,
+                    'version_5_ready' => true,
                     'pieces_pages' => false,
                     'course_slides_download' => false,
                 ],
@@ -1459,7 +1574,7 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'enable_flags' => [
                     'version_4_available' => true,
                     'translator_enabled' => true,
-                    'version_5_ready' => false,
+                    'version_5_ready' => true,
                     'pieces_pages' => false,
                     'course_slides_download' => false,
                 ],
@@ -1584,7 +1699,7 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'code' => 'pl',
                 'displayCode' => 'pl',
                 'locale' => 'pl_PL',
-                'weblate' => 'pl_PL',
+                'weblate' => 'pl',
                 'nativeName' => 'Polski',
                 'rtl' => false,
                 'flag' => '🇵🇱',
@@ -1592,7 +1707,7 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'enable_flags' => [
                     'version_4_available' => true,
                     'translator_enabled' => true,
-                    'version_5_ready' => false,
+                    'version_5_ready' => true,
                     'pieces_pages' => true,
                     'course_slides_download' => false,
                 ],
@@ -1643,13 +1758,13 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'locale' => 'pa_PK',
                 'weblate' => 'pa_PK',
                 'nativeName' => 'ਪੰਜਾਬੀ (ਪੱਛਮੀ)',
-                'rtl' => false,
+                'rtl' => true,
                 'flag' => '🇵🇰',
                 'population' => 80000000,
                 'enable_flags' => [
                     'version_4_available' => false,
                     'translator_enabled' => true,
-                    'version_5_ready' => false,
+                    'version_5_ready' => true,
                     'pieces_pages' => false,
                     'course_slides_download' => false,
                 ],
@@ -1839,7 +1954,7 @@ if ( ! function_exists( 'zume_languages' ) ) {
                 'enable_flags' => [
                     'version_4_available' => true,
                     'translator_enabled' => true,
-                    'version_5_ready' => false,
+                    'version_5_ready' => true,
                     'pieces_pages' => false,
                     'course_slides_download' => false,
                 ],
@@ -2196,6 +2311,18 @@ if ( ! function_exists( 'zume_feature_flag' ) ) {
     }
 }
 
+// =============================================================================
+// #endregion LANGUAGE & LOCALIZATION FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region TRAINING & CONTENT FUNCTIONS
+// =============================================================================
+/**
+ * Functions for managing training content, course materials, funnel stages,
+ * and educational resources.
+ */
+
 if ( ! function_exists( 'zume_training_items' ) ) {
     function zume_training_items(): array {
 
@@ -2203,6 +2330,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '1' => [
                 'key' => 1,
                 'title' => __( 'God Uses Ordinary People', 'zume' ), // pieces title & SEO title
+                'title_en' => 'God Uses Ordinary People',
                 'description' => __( "You'll see how God uses ordinary people doing simple things to make a big impact.", 'zume' ),
                 'video_title' => __( 'God Uses Ordinary People', 'zume' ), // video title & training title. simple
                 'slug' => 'god-uses-ordinary-people',
@@ -2215,6 +2343,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '2' => [
                 'key'  => 2,
                 'title' => __( 'Simple Definition of Disciple and Church', 'zume' ),
+                'title_en' => 'Simple Definition of Disciple and Church',
                 'description' => __( 'Discover the essence of being a disciple, making a disciple, and what is the church.', 'zume' ),
                 'video_title' => __( 'Disciples and the Church', 'zume' ),
                 'slug' => 'definition-of-disciple-and-church',
@@ -2227,6 +2356,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '3' => [
                 'key' => 3,
                 'title' => __( 'Spiritual Breathing is Hearing and Obeying God', 'zume' ),
+                'title_en' => 'Spiritual Breathing is Hearing and Obeying God',
                 'description' => __( 'Being a disciple means we hear from God and we obey God.', 'zume' ),
                 'video_title' => __( 'Hearing and Obeying God', 'zume' ),
                 'slug' => 'spiritual-breathing-is-hearing-and-obeying-god',
@@ -2239,6 +2369,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '4' => [
                 'key' => 4,
                 'title' => __( 'S.O.A.P.S. Bible Study', 'zume' ),
+                'title_en' => 'S.O.A.P.S. Bible Study',
                 'description' => __( 'A tool for daily Bible study that helps you understand, obey, and share God’s Word.', 'zume' ),
                 'video_title' => __( 'S.O.A.P.S. Bible Study', 'zume' ),
                 'slug' => 'soaps-bible-reading',
@@ -2251,6 +2382,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '5' => [
                 'key' => 5,
                 'title' => __( 'Accountability Groups', 'zume' ),
+                'title_en' => 'Accountability Groups',
                 'description' => __( 'A tool for two or three people of the same gender to meet weekly and encourage each other in areas that are going well and reveal areas that need correction.', 'zume' ),
                 'video_title' => __( 'Accountability Groups', 'zume' ),
                 'slug' => 'accountability-groups',
@@ -2263,6 +2395,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '6' => [
                 'key' => 6,
                 'title' => __( 'Consumer vs Producer Lifestyle', 'zume' ),
+                'title_en' => 'Consumer vs Producer Lifestyle',
                 'description' => __( "You'll discover the four main ways God makes everyday followers more like Jesus.", 'zume' ),
                 'video_title' => __( 'Producer not Consumer', 'zume' ),
                 'slug' => 'consumer-vs-producer-lifestyle',
@@ -2275,6 +2408,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '7' => [
                 'key' => 7,
                 'title' => __( 'How to Spend an Hour in Prayer', 'zume' ),
+                'title_en' => 'How to Spend an Hour in Prayer',
                 'description' => __( 'See how easy it is to spend an hour in prayer.', 'zume' ),
                 'video_title' => __( 'How to Spend an Hour in Prayer', 'zume' ),
                 'slug' => 'how-to-spend-an-hour-in-prayer',
@@ -2287,6 +2421,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '8' => [
                 'key' => 8,
                 'title' => __( 'Relational Stewardship – List of 100', 'zume' ),
+                'title_en' => 'Relational Stewardship – List of 100',
                 'description' => __( 'A tool designed to help you be a good steward of your relationships.', 'zume' ),
                 'video_title' => __( 'List of 100', 'zume' ),
                 'slug' => 'relational-stewardship-list-of-100',
@@ -2299,6 +2434,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '9' => [
                 'key' => 9,
                 'title' => __( 'Spiritual Economy', 'zume' ),
+                'title_en' => 'Spiritual Economy',
                 'description' => __( "Learn how God's economy is different from the world's. God invests more in those who are faithful with what they've already been given.", 'zume' ),
                 'video_title' => __( 'Spiritual Economy', 'zume' ),
                 'slug' => 'the-kingdom-economy',
@@ -2311,6 +2447,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '10' => [
                 'key' => 10,
                 'title' => __( 'The Gospel and How to Share It', 'zume' ),
+                'title_en' => 'The Gospel and How to Share It',
                 'description' => __( 'Learn a way to share God’s Good News from the beginning of humanity all the way to the end of this age.', 'zume' ),
                 'video_title' => __( 'Sharing God‘s Story', 'zume' ),
                 'slug' => 'the-gospel-and-how-to-share-it',
@@ -2323,6 +2460,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '11' => [
                 'key' => 11,
                 'title' => __( 'Baptism and How To Do It', 'zume' ),
+                'title_en' => 'Baptism and How To Do It',
                 'description' => __( 'Jesus said, “Go and make disciples of all nations, BAPTIZING them in the name of the Father and of the Son and of the Holy Spirit…” Learn how to put this into practice.', 'zume' ),
                 'video_title' => __( 'Baptism', 'zume' ),
                 'slug' => 'baptism-and-how-to-do-it',
@@ -2335,6 +2473,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '12' => [
                 'key' => 12,
                 'title' => __( 'Prepare Your 3-Minute Testimony', 'zume' ),
+                'title_en' => 'Prepare Your 3-Minute Testimony',
                 'description' => __( 'Learn how to share your testimony in three minutes by sharing how Jesus has impacted your life.', 'zume' ),
                 'video_title' => __( '3-Minute Testimony', 'zume' ),
                 'slug' => 'prepare-your-3-minute-testimony',
@@ -2347,6 +2486,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '13' => [
                 'key' => 13,
                 'title' => __( 'Vision Casting the Greatest Blessing', 'zume' ),
+                'title_en' => 'Vision Casting the Greatest Blessing',
                 'description' => __( 'Learn a simple pattern of making not just one follower of Jesus but entire spiritual families who multiply for generations to come.', 'zume' ),
                 'video_title' => __( 'Great, Greater, and Greatest Blessing', 'zume' ),
                 'slug' => 'vision-casting-the-greatest-blessing',
@@ -2359,6 +2499,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '14' => [
                 'key' => 14,
                 'title' => __( 'Duckling Discipleship – Leading Immediately', 'zume' ),
+                'title_en' => 'Duckling Discipleship – Leading Immediately',
                 'description' => __( 'Learn what ducklings have to do with disciple-making.', 'zume' ),
                 'video_title' => __( 'Duckling Discipleship', 'zume' ),
                 'slug' => 'duckling-discipleship-leading-sooner',
@@ -2371,6 +2512,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '15' => [
                 'key' => 15,
                 'title' => __( 'Eyes to See Where the Kingdom Isn’t', 'zume' ),
+                'title_en' => 'Eyes to See Where the Kingdom Isn’t',
                 'description' => __( 'Begin to see where God’s Kingdom isn’t. These are usually the places where God wants to work the most.', 'zume' ),
                 'video_title' => __( 'Eyes to See Where the Kingdom Isn’t', 'zume' ),
                 'slug' => 'eyes-to-see-where-the-kingdom-isnt',
@@ -2383,6 +2525,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '16' => [
                 'key' => 16,
                 'title' => __( 'The Lord’s Supper and How To Lead It', 'zume' ),
+                'title_en' => 'The Lord’s Supper and How To Lead It',
                 'description' => __( 'It’s a simple way to celebrate our intimate connection and ongoing relationship with Jesus. Learn a simple way to celebrate.', 'zume' ),
                 'video_title' => __( 'The Lord’s Supper', 'zume' ),
                 'slug' => 'the-lords-supper-and-how-to-lead-it',
@@ -2395,6 +2538,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '17' => [
                 'key' => 17,
                 'title' => __( 'Prayer Walking and How To Do It', 'zume' ),
+                'title_en' => 'Prayer Walking and How To Do It',
                 'description' => __( 'It‘s a simple way to obey God’s command to pray for others. And it‘s just what it sounds like — praying to God while walking around!', 'zume' ),
                 'video_title' => __( 'Prayer Walking', 'zume' ),
                 'slug' => 'prayer-walking',
@@ -2407,6 +2551,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '18' => [
                 'key' => 18,
                 'title' => __( 'A Person of Peace and How To Find One', 'zume' ),
+                'title_en' => 'A Person of Peace and How To Find One',
                 'description' => __( 'Learn who a person of peace might be and how to know when you‘ve found one.', 'zume' ),
                 'video_title' => __( 'Person of Peace', 'zume' ),
                 'slug' => 'a-person-of-peace-and-how-to-find-one',
@@ -2419,6 +2564,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '19' => [
                 'key' => 19,
                 'title' => __( 'Faithfulness is Better Than Knowledge', 'zume' ),
+                'title_en' => 'Faithfulness is Better Than Knowledge',
                 'description' => __( 'It‘s important what disciples know — but it‘s much more important what they DO with what they know.', 'zume' ),
                 'video_title' => __( 'Faithfulness', 'zume' ),
                 'slug' => 'faithfulness-is-better-than-knowledge',
@@ -2431,6 +2577,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '20' => [
                 'key' => 20,
                 'title' => __( 'The BLESS Prayer Pattern', 'zume' ),
+                'title_en' => 'The BLESS Prayer Pattern',
                 'description' => __( 'Practice a simple mnemonic to remind you of ways to pray for others.', 'zume' ),
                 'video_title' => __( 'The B.L.E.S.S. Prayer', 'zume' ),
                 'slug' => 'the-bless-prayer-pattern',
@@ -2443,6 +2590,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '21' => [
                 'key' => 21,
                 'title' => __( '3/3 Group Meeting Pattern', 'zume' ),
+                'title_en' => '3/3 Group Meeting Pattern',
                 'description' => __( 'A 3/3 Group is a way for followers of Jesus to meet, pray, learn, grow, fellowship and practice obeying and sharing what they‘ve learned. In this way, a 3/3 Group is not just a small group but a Simple Church.', 'zume' ),
                 'video_title' => __( '3/3 Group', 'zume' ),
                 'slug' => '3-3-group-meeting-pattern',
@@ -2455,6 +2603,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '22' => [
                 'key' => 22,
                 'title' => __( 'Training Cycle for Maturing Disciples', 'zume' ),
+                'title_en' => 'Training Cycle for Maturing Disciples',
                 'description' => __( 'Learn the training cycle and consider how it applies to disciple making.', 'zume' ),
                 'video_title' => __( 'Training Cycle', 'zume' ),
                 'slug' => 'training-cycle-for-maturing-disciples',
@@ -2467,6 +2616,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '23' => [
                 'key' => 23,
                 'title' => __( 'Leadership Cells', 'zume' ),
+                'title_en' => 'Leadership Cells',
                 'description' => __( 'A Leadership Cell is a way someone who feels called to lead can develop their leadership by practicing serving.', 'zume' ),
                 'video_title' => __( 'Leadership Cells', 'zume' ),
                 'slug' => 'leadership-cells',
@@ -2479,6 +2629,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '24' => [
                 'key' => 24,
                 'title' => __( 'Expect Non-Sequential Growth', 'zume' ),
+                'title_en' => 'Expect Non-Sequential Growth',
                 'description' => __( 'See how disciple making doesn‘t have to be linear. Multiple things can happen at the same time.', 'zume' ),
                 'video_title' => __( 'Expect Non-Sequential Growth', 'zume' ),
                 'slug' => 'expect-non-sequential-growth',
@@ -2491,6 +2642,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '25' => [
                 'key' => 25,
                 'title' => __( 'Pace of Multiplication Matters', 'zume' ),
+                'title_en' => 'Pace of Multiplication Matters',
                 'description' => __( 'Multiplying matters and multiplying quickly matters even more. See why pace matters.', 'zume' ),
                 'video_title' => __( 'Pace', 'zume' ),
                 'slug' => 'pace-of-multiplication-matters',
@@ -2503,6 +2655,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '26' => [
                 'key' => 26,
                 'title' => __( 'Always Part of Two Churches', 'zume' ),
+                'title_en' => 'Always Part of Two Churches',
                 'description' => __( 'Learn how to obey Jesus‘ commands by going AND staying.', 'zume' ),
                 'video_title' => __( 'Always Part of Two Churches', 'zume' ),
                 'slug' => 'always-part-of-two-churches',
@@ -2516,6 +2669,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
                 'key' => 27,
                 'slug' => 'three-month-plan',
                 'title' => __( 'Three-Month Plan', 'zume' ),
+                'title_en' => 'Three-Month Plan',
                 'description' => __( 'Create and share your plan for how you will implement the Zúme tools over the next three months.', 'zume' ),
                 'video_title' => __( 'Three-Month Plan', 'zume' ),
                 'video' => false,
@@ -2527,6 +2681,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '28' => [
                 'key' => 28,
                 'title' => __( 'Coaching Checklist', 'zume' ),
+                'title_en' => 'Coaching Checklist',
                 'description' => __( 'A powerful tool you can use to quickly assess your own strengths and vulnerabilities when it comes to making disciples who multiply.', 'zume' ),
                 'video_title' => __( 'Coaching Checklist', 'zume' ),
                 'slug' => 'coaching-checklist',
@@ -2539,6 +2694,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '29' => [
                 'key' => 29,
                 'title' => __( 'Leadership in Networks', 'zume' ),
+                'title_en' => 'Leadership in Networks',
                 'description' => __( 'Learn how multiplying churches stay connected and live life together as an extended, spiritual family.', 'zume' ),
                 'video_title' => __( 'Leadership in Networks', 'zume' ),
                 'slug' => 'leadership-in-networks',
@@ -2551,6 +2707,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '30' => [
                 'key' => 30,
                 'title' => __( 'Peer Mentoring Groups', 'zume' ),
+                'title_en' => 'Peer Mentoring Groups',
                 'description' => __( 'This is a group that consists of people who are leading and starting 3/3 Groups. It also follows a 3/3 format and is a powerful way to assess the spiritual health of God’s work in your area.', 'zume' ),
                 'video_title' => __( 'Peer Mentoring', 'zume' ),
                 'slug' => 'peer-mentoring-groups',
@@ -2563,6 +2720,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '31' => [
                 'key' => 31,
                 'title' => __( 'Four Fields Tool', 'zume' ),
+                'title_en' => 'Four Fields Tool',
                 'description' => __( 'The four fields diagnostic chart is a simple tool to be used by a leadership cell to reflect on the status of current efforts and the kingdom activity around them.', 'zume' ),
                 'video_title' => __( 'Four Fields Tool', 'zume' ),
                 'slug' => 'four-fields-tool',
@@ -2575,6 +2733,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '32' => [
                 'key' => 32,
                 'title' => __( 'Generational Mapping', 'zume' ),
+                'title_en' => 'Generational Mapping',
                 'description' => __( 'Generation mapping is another simple tool to help leaders in a movement understand the growth around them.', 'zume' ),
                 'video_title' => __( 'Generational Mapping', 'zume' ),
                 'slug' => 'generational-mapping',
@@ -2587,6 +2746,7 @@ if ( ! function_exists( 'zume_training_items' ) ) {
             '33' => [
                 'key' => 33,
                 'title' => __( '3-Circles Gospel Presentation', 'zume' ),
+                'title_en' => '3-Circles Gospel Presentation',
                 'description' => __( 'The 3-Circles gospel presentation is a way to tell the gospel using a simple illustration that can be drawn on a piece of paper.', 'zume' ),
                 'video_title' => __( '3-Circles', 'zume' ),
                 'slug' => '3-circles-gospel-presentation',
@@ -2687,7 +2847,7 @@ if ( ! function_exists( 'zume_training_items_by_script' ) ) {
     }
 }
 if ( ! function_exists( 'zume_training_items_for_session' ) ) {
-    function zume_training_items_for_session( string $session_type, int $session_number = null ): array {
+    function zume_training_items_for_session( string $session_type, ?int $session_number = null ): array {
         $session_numbers_by_type = [
             'a' => [
                 1 => [ 1, 2, 3, 4, 5 ],
@@ -2895,6 +3055,19 @@ if ( ! function_exists( 'zume_funnel_stages' ) ) {
         ];
     }
 }
+
+// =============================================================================
+// #endregion TRAINING & CONTENT FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region UTILITY FUNCTIONS
+// =============================================================================
+/**
+ * Utility functions for URL handling, formatting, validation,
+ * timezones, and other helper operations.
+ */
+
 if ( ! function_exists( 'zume_mirror_url' ) ) {
     function zume_mirror_url() {
         return 'https://storage.googleapis.com/zume-file-mirror/';
@@ -3035,7 +3208,7 @@ if ( ! function_exists( 'zume_get_percent' ) ) {
                 $percent = $percent * 100;
                 $percent = round( ( 100 - $percent ), 1 ) * -1;
             }
-            else if ( $percent < 1 && intval( $percent ) >= 10  ) {
+            else if ( $percent < 1 && intval( $percent ) >= 10 ) {
                 $percent = $percent * 100;
                 $percent = round( ( $percent ), 1 ) * -1;
             }
@@ -3051,7 +3224,7 @@ if ( ! function_exists( 'zume_get_percent' ) ) {
     }
 }
 if ( ! function_exists( 'zume_get_timezones' ) ) {
-    function zume_get_timezones( string $key = null ): array {
+    function zume_get_timezones( ?string $key = null ): array {
         $timezones = [
             'Africa/Abidjan' => [
                 'timezone' => 'Africa/Abidjan',
@@ -6005,6 +6178,18 @@ if ( ! function_exists( 'zume_get_timezones' ) ) {
     }
 }
 
+// =============================================================================
+// #endregion UTILITY FUNCTIONS
+// =============================================================================
+
+// =============================================================================
+// #region API & LOGGING CLASSES
+// =============================================================================
+/**
+ * Classes for REST API endpoints, system logging, user generation mapping,
+ * and other core system functionality.
+ */
+
 if ( ! class_exists( 'Zume_Global_Endpoints' ) ) {
     class Zume_Global_Endpoints {
         public $namespace = 'zume_system/v1';
@@ -6566,7 +6751,7 @@ if ( ! class_exists( 'Zume_System_Log_API' ) ) {
             ];
             self::_check_for_stage_change( $added_log, $report['user_id'], $report, $log );
 
-            do_action( 'zume_verify_encouragement_plan', $report['user_id'], $report['type'], $report['subtype'] );
+            Zume_System_Encouragement_API::update_plan( $report['user_id'], $report['type'], $report['subtype'] );
 
             return $added_log;
         }
@@ -7616,13 +7801,17 @@ if ( ! class_exists( 'Zume_System_Log_API' ) ) {
                 ]
             );
 
+            /**
+             * Fires after a log is inserted into the database.
+             */
+            do_action( 'zume_log', $args );
+
             $report_id = $wpdb->insert_id;
             if ( !$report_id ) {
                 return $report_id;
             } else {
                 $args['id'] = $report_id;
             }
-
 
             return $report_id;
         }
@@ -7859,6 +8048,11 @@ if ( ! class_exists( 'Zume_System_Log_API' ) ) {
             );
 
             $report_id = $wpdb->insert_id;
+
+            /**
+             * Fires after an anonymous log is inserted into the database.
+             */
+            do_action( 'zume_log_anonymous', $args );
 
             return $report_id;
         }
@@ -8167,6 +8361,10 @@ if ( ! class_exists( 'Zume_User_Genmap' ) ) {
     }
     Zume_User_Genmap::instance();
 }
+
+// =============================================================================
+// #endregion API & LOGGING CLASSES
+// =============================================================================
 
 // must be last for initialization
 zume_get_user_profile();
